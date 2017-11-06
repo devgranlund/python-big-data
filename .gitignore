@@ -1,0 +1,7 @@
+# IDE related files
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/python-big-data.iml
+.idea/workspace.xml
+
