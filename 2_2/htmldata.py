@@ -29,9 +29,19 @@ hs.drop(hs.columns[[0, 1, 4, 5, 6, 7, 8, 9, 10, 11]], axis=1, inplace=True)
 hs = hs.iloc[1:]
 hs.set_index(2, inplace=True)
 
-# Merge gdp and happiness
+# merge gdp and happiness
 df_gdp_happiness = pd.merge(df_gdp, hs, left_index=True, right_index=True)
 df_gdp_happiness.rename(columns={3: 'Happiness score'}, inplace=True)
 
-print(df_gdp_happiness)
+# Life expectancy
+le = pd.read_html("https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy")
+le = le.pop(0)
+le.drop(le.columns[[1, 3, 4, 5, 6, 7, 8]], axis=1, inplace=True)
+le = le.iloc[1:]
+le.set_index(0, inplace=True)
 
+# merge le to df_gdp_happiness
+df_gdp_happiness_life = pd.merge(df_gdp_happiness, le, left_index=True, right_index=True)
+df_gdp_happiness_life.rename(columns={2: 'Life expectancy'}, inplace=True)
+
+print(df_gdp_happiness_life)
