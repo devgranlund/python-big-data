@@ -2,9 +2,13 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
 import codecs
+import matplotlib.pyplot as plt
+import locale
 
 # Author: tuomas.granlund@solita.fi
 # 07.11.2017
+
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 # GDP_(PPP)
 url = "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(PPP)_per_capita"
@@ -19,7 +23,7 @@ for i in range(len(data_rows)):
     row = data_rows[i].findAll('td')[1:]
     list_data.append([row[0].findAll('a').pop(0).getText(), row[1].getText()])
     countries.append(row[0].findAll('a').pop(0).getText())
-    gdp.append(row[1].getText())
+    gdp.append(int(locale.atoi(row[1].getText())))
 
 df_gdp = pd.DataFrame(gdp, index=countries, columns=['GDP (PPP) per capita'])
 
@@ -69,3 +73,49 @@ file = codecs.open('countrydata.html', "w", "utf-8")
 file.write(html)
 file.close()
 
+# Scatter plots
+df = df_gdp_happiness_life_br  # for convenience
+df[['GDP (PPP) per capita', 'Happiness score', 'Life expectancy', 'Birth rate']] = \
+    df[['GDP (PPP) per capita', 'Happiness score', 'Life expectancy', 'Birth rate']].apply(pd.to_numeric)
+
+plt.figure(1, figsize=(10, 10))
+
+# gdp vs happiness
+plt.subplot(321)
+plt.scatter(df['GDP (PPP) per capita'], df['Happiness score'], s=2)
+plt.xlabel('GDP (PPP) per capita')
+plt.ylabel('Happiness score')
+
+# gdp vs life expectancy
+plt.subplot(322)
+plt.scatter(df['GDP (PPP) per capita'], df['Life expectancy'], s=2)
+plt.xlabel('GDP (PPP) per capita')
+plt.ylabel('Life expectancy')
+
+# gdp vs birth rate
+plt.subplot(323)
+plt.scatter(df['GDP (PPP) per capita'], df['Birth rate'], s=2)
+plt.xlabel('GDP (PPP) per capita')
+plt.ylabel('Birth rate')
+
+# happiness vs life expectancy
+plt.subplot(324)
+plt.scatter(df['Happiness score'], df['Life expectancy'], s=2)
+plt.xlabel('Happiness score')
+plt.ylabel('Life expectancy')
+
+# happiness vs birth rate
+plt.subplot(325)
+plt.scatter(df['Happiness score'], df['Birth rate'], s=2)
+plt.xlabel('Happiness score')
+plt.ylabel('Birth rate')
+
+# life expectancy vs birth rate
+plt.subplot(326)
+plt.scatter(df['Life expectancy'], df['Birth rate'], s=2)
+plt.xlabel('Life expectancy')
+plt.ylabel('Birth rate')
+
+plt.subplots_adjust(top=0.98, bottom=0.02)
+# plt.show()
+plt.savefig('countryplots.png')
