@@ -118,4 +118,5 @@ plt.ylabel('Birth rate')
 
 plt.subplots_adjust(top=0.98, bottom=0.02)
 # plt.show()
+plt.tight_layout()
 plt.savefig('countryplots.png')
