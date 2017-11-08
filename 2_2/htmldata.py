@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
+import codecs
 
 # Author: tuomas.granlund@solita.fi
 # 07.11.2017
@@ -44,4 +45,27 @@ le.set_index(0, inplace=True)
 df_gdp_happiness_life = pd.merge(df_gdp_happiness, le, left_index=True, right_index=True)
 df_gdp_happiness_life.rename(columns={2: 'Life expectancy'}, inplace=True)
 
-print(df_gdp_happiness_life)
+# Birth rate
+url = "https://en.wikipedia.org/wiki/List_of_sovereign_states_and_dependent_territories_by_birth_rate"
+html = urlopen(url)
+soup = BeautifulSoup(html, "lxml")
+table = soup.findAll('table', limit=2)[1]
+data_rows = table.findAll('tr')[3:]
+countries = []
+br = []
+for i in range(196):
+    row = data_rows[i].findAll('td')
+    countries.append(row[0].findAll('a').pop(0).getText())
+    br.append(row[9].getText())
+
+df_br = pd.DataFrame(br, index=countries, columns=['Birth rate'])
+
+# merge df_br to df_gdp_happiness_life_br
+df_gdp_happiness_life_br = pd.merge(df_gdp_happiness_life, df_br, left_index=True, right_index=True)
+
+# Write data to HTML
+html = df_gdp_happiness_life_br.to_html()
+file = codecs.open('countrydata.html', "w", "utf-8")
+file.write(html)
+file.close()
+
