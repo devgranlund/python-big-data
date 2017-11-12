@@ -5,3 +5,5 @@
 .idea/python-big-data.iml
 .idea/workspace.xml
 
+# Special files
+tieliikenne_data.csv
