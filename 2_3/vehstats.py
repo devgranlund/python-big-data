@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
 
 # Author: tuomas.granlund@solita.fi
 # 12.11.2017
@@ -19,27 +20,27 @@ while loop:
 
 df = pd.concat(chunks, ignore_index=True)
 
-# Count the most popular cars
+# The most popular cars
 kaikki_lkm = len(df.index)
 merkit = df.merkkiSelvakielinen.value_counts()
 first_car = merkit.index[0]
 first_car_count = merkit.get(first_car)
-first_car_pr = (first_car_count/kaikki_lkm) * 100
+first_car_pr = (first_car_count / kaikki_lkm) * 100
 second_car = merkit.index[1]
 second_car_count = merkit.get(second_car)
-second_car_pr = (second_car_count/kaikki_lkm) * 100
+second_car_pr = (second_car_count / kaikki_lkm) * 100
 third_car = merkit.index[2]
 third_car_count = merkit.get(third_car)
-third_car_pr = (third_car_count/kaikki_lkm) * 100
+third_car_pr = (third_car_count / kaikki_lkm) * 100
 fourth_car = merkit.index[3]
 fourth_car_count = merkit.get(fourth_car)
-fourth_car_pr = (fourth_car_count/kaikki_lkm) * 100
+fourth_car_pr = (fourth_car_count / kaikki_lkm) * 100
 fifth_car = merkit.index[4]
 fifth_car_count = merkit.get(fifth_car)
-fifth_car_pr = (fifth_car_count/kaikki_lkm) * 100
+fifth_car_pr = (fifth_car_count / kaikki_lkm) * 100
 others = 'Others'
 others_count = kaikki_lkm - first_car_count - second_car_count - third_car_count - fourth_car_count - fifth_car_count
-others_pr = (others_count/kaikki_lkm) * 100
+others_pr = (others_count / kaikki_lkm) * 100
 
 labels = [first_car, second_car, third_car, fourth_car, fifth_car, others]
 sizes = [first_car_pr, second_car_pr, third_car_pr, fourth_car_pr, fifth_car_pr, others_pr]
@@ -50,31 +51,55 @@ ax1.axis('equal')
 # The shares of cars by travel distance
 first_cat = '0-50000 km'
 first_cat_count = len(df[(df['matkamittarilukema'] <= 50000)].index)
-first_cat_pr = (first_cat_count/kaikki_lkm) * 100
+first_cat_pr = (first_cat_count / kaikki_lkm) * 100
 second_cat = '50001-100000 km'
 second_cat_count = len(df[(df['matkamittarilukema'].between(50001, 100000))].index)
-second_cat_pr = (second_cat_count/kaikki_lkm) * 100
+second_cat_pr = (second_cat_count / kaikki_lkm) * 100
 third_cat = '100001-150000 km'
 third_cat_count = len(df[(df['matkamittarilukema'].between(100001, 150000))].index)
-third_cat_pr = (third_cat_count/kaikki_lkm) * 100
+third_cat_pr = (third_cat_count / kaikki_lkm) * 100
 fourth_cat = '150001-200000 km'
 fourth_cat_count = len(df[(df['matkamittarilukema'].between(150001, 200000))].index)
-fourth_cat_pr = (fourth_cat_count/kaikki_lkm) * 100
+fourth_cat_pr = (fourth_cat_count / kaikki_lkm) * 100
 fifth_cat = '200001-250000 km'
 fifth_cat_count = len(df[(df['matkamittarilukema'].between(200001, 250000))].index)
-fifth_cat_pr = (fifth_cat_count/kaikki_lkm) * 100
+fifth_cat_pr = (fifth_cat_count / kaikki_lkm) * 100
 sixth_cat = '250001-300000 km'
 sixth_cat_count = len(df[(df['matkamittarilukema'].between(250001, 300000))].index)
-sixth_cat_pr = (sixth_cat_count/kaikki_lkm) * 100
+sixth_cat_pr = (sixth_cat_count / kaikki_lkm) * 100
 seventh_cat = 'over 300000 km'
 seventh_cat_count = len(df[(df['matkamittarilukema'] > 300000)].index)
-seventh_cat_pr = (sixth_cat_count/kaikki_lkm) * 100
+seventh_cat_pr = (sixth_cat_count / kaikki_lkm) * 100
 
 labels = [first_cat, second_cat, third_cat, fourth_cat, fifth_cat, sixth_cat, seventh_cat]
 sizes = [first_cat_pr, second_cat_pr, third_cat_pr, fourth_cat_pr, fifth_cat_pr, sixth_cat_pr, seventh_cat_pr]
-fig2, ax2 = plt.subplots()
+fig1, ax2 = plt.subplots()
 ax2.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 ax2.axis('equal')
+
+# How old are the cars?
+df['ensirekisterointipvm'] = pd.to_datetime(df['ensirekisterointipvm'], format="%Y-%m-%d")
+now = datetime.datetime.utcnow()
+f = lambda x: (now - x).days / 360
+s_old_count = len(df[(df['ensirekisterointipvm'].map(f) <= 5)].index)
+s_old_count_pr = (s_old_count / kaikki_lkm) * 100
+m_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(5.000001, 10))].index)
+m_old_count_pr =(m_old_count / kaikki_lkm) * 100
+l_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(10.000001, 15))].index)
+l_old_count_pr = (l_old_count / kaikki_lkm) * 100
+xl_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(15.000001, 20))].index)
+xl_old_count_pr = (xl_old_count / kaikki_lkm) * 100
+xxl_old_count = len(df[(df['ensirekisterointipvm'].map(f) > 20)].index)
+xxl_old_count_pr = (xxl_old_count / kaikki_lkm) * 100
+
+labels = ['under 5 y old', '5 - 10 y old', '10 - 15 y old',
+          '15 - 20 y old', 'over 20 y old']
+sizes = [s_old_count_pr, m_old_count_pr, l_old_count_pr, xl_old_count_pr, xxl_old_count_pr]
+fig1, ax3 = plt.subplots()
+ax3.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+ax3.axis('equal')
+
+
 
 plt.show()
 
@@ -82,3 +107,4 @@ plt.show()
 
 # print(merkki_selvakielinen)
 
+# def count_years(now, )
