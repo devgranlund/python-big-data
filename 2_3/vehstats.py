@@ -21,59 +21,58 @@ while loop:
 df = pd.concat(chunks, ignore_index=True)
 
 # The most popular cars
-kaikki_lkm = len(df.index)
-merkit = df.merkkiSelvakielinen.value_counts()
-first_car = merkit.index[0]
-first_car_count = merkit.get(first_car)
-first_car_pr = (first_car_count / kaikki_lkm) * 100
-second_car = merkit.index[1]
-second_car_count = merkit.get(second_car)
-second_car_pr = (second_car_count / kaikki_lkm) * 100
-third_car = merkit.index[2]
-third_car_count = merkit.get(third_car)
-third_car_pr = (third_car_count / kaikki_lkm) * 100
-fourth_car = merkit.index[3]
-fourth_car_count = merkit.get(fourth_car)
-fourth_car_pr = (fourth_car_count / kaikki_lkm) * 100
-fifth_car = merkit.index[4]
-fifth_car_count = merkit.get(fifth_car)
-fifth_car_pr = (fifth_car_count / kaikki_lkm) * 100
+count_of_all_cars = len(df.index)
+car_brands = df.merkkiSelvakielinen.value_counts()
+car_1 = car_brands.index[0]
+car_1_count = car_brands.get(car_1)
+car_1_pr = (car_1_count / count_of_all_cars) * 100
+car_2 = car_brands.index[1]
+car_2_count = car_brands.get(car_2)
+car_2_pr = (car_2_count / count_of_all_cars) * 100
+car_3 = car_brands.index[2]
+car_3_count = car_brands.get(car_3)
+car_3_pr = (car_3_count / count_of_all_cars) * 100
+car_4 = car_brands.index[3]
+car_4_count = car_brands.get(car_4)
+car_4_pr = (car_4_count / count_of_all_cars) * 100
+car_5 = car_brands.index[4]
+car_5_count = car_brands.get(car_5)
+car_5_pr = (car_5_count / count_of_all_cars) * 100
 others = 'Others'
-others_count = kaikki_lkm - first_car_count - second_car_count - third_car_count - fourth_car_count - fifth_car_count
-others_pr = (others_count / kaikki_lkm) * 100
+others_count = count_of_all_cars - car_1_count - car_2_count - car_3_count - car_4_count - car_5_count
+others_pr = (others_count / count_of_all_cars) * 100
 
-labels = [first_car, second_car, third_car, fourth_car, fifth_car, others]
-sizes = [first_car_pr, second_car_pr, third_car_pr, fourth_car_pr, fifth_car_pr, others_pr]
-fig1, ax1 = plt.subplots()
+labels = [car_1, car_2, car_3, car_4, car_5, others]
+sizes = [car_1_pr, car_2_pr, car_3_pr, car_4_pr, car_5_pr, others_pr]
+fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4)
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 ax1.axis('equal')
 
 # The shares of cars by travel distance
-first_cat = '0-50000 km'
-first_cat_count = len(df[(df['matkamittarilukema'] <= 50000)].index)
-first_cat_pr = (first_cat_count / kaikki_lkm) * 100
-second_cat = '50001-100000 km'
-second_cat_count = len(df[(df['matkamittarilukema'].between(50001, 100000))].index)
-second_cat_pr = (second_cat_count / kaikki_lkm) * 100
-third_cat = '100001-150000 km'
-third_cat_count = len(df[(df['matkamittarilukema'].between(100001, 150000))].index)
-third_cat_pr = (third_cat_count / kaikki_lkm) * 100
-fourth_cat = '150001-200000 km'
-fourth_cat_count = len(df[(df['matkamittarilukema'].between(150001, 200000))].index)
-fourth_cat_pr = (fourth_cat_count / kaikki_lkm) * 100
-fifth_cat = '200001-250000 km'
-fifth_cat_count = len(df[(df['matkamittarilukema'].between(200001, 250000))].index)
-fifth_cat_pr = (fifth_cat_count / kaikki_lkm) * 100
-sixth_cat = '250001-300000 km'
-sixth_cat_count = len(df[(df['matkamittarilukema'].between(250001, 300000))].index)
-sixth_cat_pr = (sixth_cat_count / kaikki_lkm) * 100
-seventh_cat = 'over 300000 km'
-seventh_cat_count = len(df[(df['matkamittarilukema'] > 300000)].index)
-seventh_cat_pr = (sixth_cat_count / kaikki_lkm) * 100
+cat_1 = '0-50000 km'
+cat_1_count = len(df[(df['matkamittarilukema'] <= 50000)].index)
+cat_1_pr = (cat_1_count / count_of_all_cars) * 100
+cat_2 = '50001-100000 km'
+cat_2_count = len(df[(df['matkamittarilukema'].between(50001, 100000))].index)
+cat_2_pr = (cat_2_count / count_of_all_cars) * 100
+cat_3 = '100001-150000 km'
+cat_3_count = len(df[(df['matkamittarilukema'].between(100001, 150000))].index)
+cat_3_pr = (cat_3_count / count_of_all_cars) * 100
+cat_4 = '150001-200000 km'
+cat_4_count = len(df[(df['matkamittarilukema'].between(150001, 200000))].index)
+cat_4_pr = (cat_4_count / count_of_all_cars) * 100
+cat_5 = '200001-250000 km'
+cat_5_count = len(df[(df['matkamittarilukema'].between(200001, 250000))].index)
+cat_5_pr = (cat_5_count / count_of_all_cars) * 100
+cat_6 = '250001-300000 km'
+cat_6_count = len(df[(df['matkamittarilukema'].between(250001, 300000))].index)
+cat_6_pr = (cat_6_count / count_of_all_cars) * 100
+cat_7 = 'over 300000 km'
+cat_7_count = len(df[(df['matkamittarilukema'] > 300000)].index)
+cat_7_pr = (cat_6_count / count_of_all_cars) * 100
 
-labels = [first_cat, second_cat, third_cat, fourth_cat, fifth_cat, sixth_cat, seventh_cat]
-sizes = [first_cat_pr, second_cat_pr, third_cat_pr, fourth_cat_pr, fifth_cat_pr, sixth_cat_pr, seventh_cat_pr]
-fig1, ax2 = plt.subplots()
+labels = [cat_1, cat_2, cat_3, cat_4, cat_5, cat_6, cat_7]
+sizes = [cat_1_pr, cat_2_pr, cat_3_pr, cat_4_pr, cat_5_pr, cat_6_pr, cat_7_pr]
 ax2.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 ax2.axis('equal')
 
@@ -82,24 +81,45 @@ df['ensirekisterointipvm'] = pd.to_datetime(df['ensirekisterointipvm'], format="
 now = datetime.datetime.utcnow()
 f = lambda x: (now - x).days / 360
 s_old_count = len(df[(df['ensirekisterointipvm'].map(f) <= 5)].index)
-s_old_count_pr = (s_old_count / kaikki_lkm) * 100
+s_old_count_pr = (s_old_count / count_of_all_cars) * 100
 m_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(5.000001, 10))].index)
-m_old_count_pr =(m_old_count / kaikki_lkm) * 100
+m_old_count_pr = (m_old_count / count_of_all_cars) * 100
 l_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(10.000001, 15))].index)
-l_old_count_pr = (l_old_count / kaikki_lkm) * 100
+l_old_count_pr = (l_old_count / count_of_all_cars) * 100
 xl_old_count = len(df[(df['ensirekisterointipvm'].map(f).between(15.000001, 20))].index)
-xl_old_count_pr = (xl_old_count / kaikki_lkm) * 100
+xl_old_count_pr = (xl_old_count / count_of_all_cars) * 100
 xxl_old_count = len(df[(df['ensirekisterointipvm'].map(f) > 20)].index)
-xxl_old_count_pr = (xxl_old_count / kaikki_lkm) * 100
+xxl_old_count_pr = (xxl_old_count / count_of_all_cars) * 100
 
 labels = ['under 5 y old', '5 - 10 y old', '10 - 15 y old',
           '15 - 20 y old', 'over 20 y old']
 sizes = [s_old_count_pr, m_old_count_pr, l_old_count_pr, xl_old_count_pr, xxl_old_count_pr]
-fig1, ax3 = plt.subplots()
 ax3.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 ax3.axis('equal')
 
+# CO2 emissions
+co_1 = len(df[(df['Co2'] <= 100)].index)
+co_1_pr = (co_1 / count_of_all_cars) * 100
+co_2 = len(df[(df['Co2'].between(101, 125))].index)
+co_2_pr = (co_2 / count_of_all_cars) * 100
+co_3 = len(df[(df['Co2'].between(126, 150))].index)
+co_3_pr = (co_3 / count_of_all_cars) * 100
+co_4 = len(df[(df['Co2'].between(151, 175))].index)
+co_4_pr = (co_4 / count_of_all_cars) * 100
+co_5 = len(df[(df['Co2'].between(176, 200))].index)
+co_5_pr = (co_5 / count_of_all_cars) * 100
+co_6 = len(df[(df['Co2'].between(201, 225))].index)
+co_6_pr = (co_6 / count_of_all_cars) * 100
+co_7 = len(df[(df['Co2'].between(226, 250))].index)
+co_7_pr = (co_7 / count_of_all_cars) * 100
+co_8 = len(df[(df['Co2'] > 250)].index)
+co_8_pr = (co_8 / count_of_all_cars) * 100
 
+labels = ['under 100 g/km', '100 - 125 g/km', '125 - 150 g/km', '150 - 175 g/km', '175 - 200 g/km',
+          '200 - 225 g/km', '225 - 250 g/km', 'over 250 g/km']
+sizes = [co_1_pr, co_2_pr, co_3_pr, co_4_pr, co_5_pr, co_6_pr, co_7_pr, co_8_pr]
+ax4.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+ax4.axis('equal')
 
 plt.show()
 
