@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 # Author: TGr
 # 17.11.2017
@@ -17,9 +18,17 @@ while loop:
 
 df = pd.concat(chunks, ignore_index=True)
 
+# drop rows where ensirekisterointipvm is NaN
 df = df.dropna(subset=['ensirekisterointipvm'])
+
+# drop rows where Co2 is Nan
 df = df.dropna(subset=['Co2'])
+
+# convert date to year
 f = lambda x: x[:4]
 df['ensirekisterointipvm'] = df['ensirekisterointipvm'].map(f)
 
-print(df)
+# pivot table
+pivot = pd.pivot_table(df, index='ensirekisterointipvm', values=['Co2'], aggfunc=[np.average, len])
+
+print(pivot)
